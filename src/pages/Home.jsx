@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,6 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteData, loadDatas } from "../Redux/actions";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,8 +32,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(id, city, country, population) {
+  return { id, city, country, population };
 }
 
 const rows = [
@@ -42,34 +45,71 @@ const rows = [
 ];
 
 const Home = () => {
+  // const classes = useStyles();
+  let dispatch = useDispatch();
+  const { datas } = useSelector((state) => state.data);
+
+  useEffect(() => {
+    dispatch(loadDatas());
+  }, []);
+
+  const handleDelete = (id) => {
+    if (window.confirm("Do you want to delete ?")) {
+      dispatch(deleteData(id));
+    }
+  };
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>id</StyledTableCell>
-            <StyledTableCell align="center">City</StyledTableCell>
-            <StyledTableCell align="center">Population</StyledTableCell>
-            <StyledTableCell align="center">Country</StyledTableCell>
-            <StyledTableCell align="center">Edit</StyledTableCell>
-            <StyledTableCell align="center">Delete</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        {/* <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody> */}
-      </Table>
-    </TableContainer>
+    <div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>id</StyledTableCell>
+              <StyledTableCell align="center">City</StyledTableCell>
+              <StyledTableCell align="center">Population</StyledTableCell>
+              <StyledTableCell align="center">Country</StyledTableCell>
+              <StyledTableCell align="center">Edit</StyledTableCell>
+              <StyledTableCell align="center">Delete</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {datas &&
+              datas.map((data) => (
+                <StyledTableRow key={data.id}>
+                  <StyledTableCell component="th" scope="row">
+                    {data.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{data.city}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {data.population}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {data.country}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <ButtonGroup variant="text" aria-label="text button group">
+                      <Button style={{ marginRight: "5px" }} color="primary">
+                        Edit
+                      </Button>
+                    </ButtonGroup>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <ButtonGroup variant="text" aria-label="text button group">
+                      <Button
+                        onClick={() => handleDelete(data.id)}
+                        style={{ marginLeft: "10px" }}
+                        color="secondary"
+                      >
+                        Remove
+                      </Button>
+                    </ButtonGroup>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

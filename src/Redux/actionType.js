@@ -1,1 +1,2 @@
-export const GET_DATA = "GET_DATA";
+export const GET_DATAS = "GET_DATAS";
+export const DELETE_DATA = "DELETE_DATA";

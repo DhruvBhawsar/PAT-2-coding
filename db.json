@@ -1,9 +1,22 @@
 {
-    "city":[
-        {
-            "country" : "India",
-            "city" : "banswara",
-            "population" : 10000
-        }
-    ]
+  "data": [
+    {
+      "id": 1,
+      "country": "India",
+      "city": "banswara",
+      "population": 10000
+    },
+    {
+      "id": 2,
+      "country": "India",
+      "city": "udaipur",
+      "population": 20000
+    },
+    {
+      "id": 3,
+      "country": "India",
+      "city": "udaipur",
+      "population": 20000
+    }
+  ]
 }
